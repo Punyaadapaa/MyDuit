@@ -6,6 +6,14 @@
 
 **MyDuit** adalah aplikasi Android berbasis Jetpack Compose yang dirancang untuk membantu kamu mencatat dan melacak arus kas (pemasukan dan pengeluaran) harian dengan mudah dan cepat.
 
+## 📸 Tampilan Aplikasi
+
+Berikut adalah tampilan utama (Dashboard) dari aplikasi MyDuit:
+
+<img width="280" height="1482" alt="Screenshot_20260415_182434" src="https://github.com/user-attachments/assets/06abf378-c546-4d29-9389-c320aa8bf027" />
+
+---
+
 ## ✨ Fitur Utama
 
 - **💰 Dashboard Saldo Total**: Pantau sisa saldo kamu secara real-time berdasarkan riwayat transaksi.
