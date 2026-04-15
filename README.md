@@ -27,4 +27,4 @@ Proyek ini dibangun menggunakan teknologi pengembangan Android modern:
 
 1. **Clone repositori ini** ke mesin lokal kamu:
    ```bash
-   git clone [https://github.com/username-kamu/MyDuit.git](https://github.com/username-kamu/MyDuit.git)
+   git clone https://github.com/Punyaadapaa/MyDuit.git
