@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.sp
 import java.text.SimpleDateFormat
 import java.util.*
 
-// 1. Struktur Data Sederhana
 data class Transaction(val title: String, val amount: Double, val isIncome: Boolean, val date: String)
 
 class MainActivity : ComponentActivity() {
@@ -38,19 +37,17 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DompetApp() {
-    // 2. State Management Sederhana dalam satu tempat
     var showDialog by remember { mutableStateOf(false) }
     val transactions = remember { mutableStateListOf<Transaction>() }
 
-    // Hitung saldo otomatis
-    val balance = transactions.fold(1000000000.0) { acc, tx ->
+    val balance = transactions.fold(100000.0) { acc, tx ->
         if (tx.isIncome) acc + tx.amount else acc - tx.amount
     }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Dompetku", fontWeight = FontWeight.Bold) },
+                title = { Text("MyDuit", fontWeight = FontWeight.Bold) },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
             )
         },
@@ -61,7 +58,6 @@ fun DompetApp() {
         }
     ) { padding ->
         Column(modifier = Modifier.padding(padding).padding(16.dp).fillMaxSize()) {
-            // 3. Kartu Saldo
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary)
@@ -75,7 +71,6 @@ fun DompetApp() {
             Spacer(modifier = Modifier.height(16.dp))
             Text("Riwayat", fontWeight = FontWeight.Bold, fontSize = 18.sp)
 
-            // 4. List Transaksi
             LazyColumn {
                 items(transactions) { tx ->
                     val color = if (tx.isIncome) Color(0xFF4CAF50) else Color(0xFFE53935)
@@ -92,7 +87,6 @@ fun DompetApp() {
             }
         }
 
-        // 5. Pop-up Dialog untuk Input Data
         if (showDialog) {
             var title by remember { mutableStateOf("") }
             var amount by remember { mutableStateOf("") }
@@ -130,7 +124,7 @@ fun DompetApp() {
                         if (title.isNotBlank() && amount.isNotBlank()) {
                             val date = SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(Date())
                             transactions.add(Transaction(title, amount.toDouble(), isIncome, date))
-                            showDialog = false // Tutup dialog setelah simpan
+                            showDialog = false
                         }
                     }) { Text("Simpan") }
                 },
