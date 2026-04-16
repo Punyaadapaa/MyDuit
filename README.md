@@ -13,7 +13,7 @@ Berikut adalah tampilan utama (Dashboard) dari aplikasi MyDuit:
 | Dashboard Utama | Detail Transaksi | Riwayat |
 | :---: | :---: | :---: |
 | <img width="360" alt="Dashboard 1" src="https://github.com/user-attachments/assets/7b2a2ffa-c841-4ee0-a888-f6bdb783cb86" /> | <img width="360" alt="Dashboard 2" src="https://github.com/user-attachments/assets/39517e31-bffc-4a04-9c2b-e0d4dfcbc4ea" /> | <img width="360" height="Dashboard 3" alt="image" src="https://github.com/user-attachments/assets/5674aed1-61f4-4c32-bd92-fa1ed3ff4eaa" /> |
-## 📸 Tampilan Aplikasi
+
 
 
 
