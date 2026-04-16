@@ -18,8 +18,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.myduit.ui.theme.MyDuitTheme
 import java.text.SimpleDateFormat
 import java.util.*
+import java.text.NumberFormat
 
 data class Transaction(val title: String, val amount: Double, val isIncome: Boolean, val date: String)
 
@@ -27,7 +29,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MaterialTheme {
+            MyDuitTheme() {
                 DompetApp()
             }
         }
@@ -39,10 +41,14 @@ class MainActivity : ComponentActivity() {
 fun DompetApp() {
     var showDialog by remember { mutableStateOf(false) }
     val transactions = remember { mutableStateListOf<Transaction>() }
+    var title by remember { mutableStateOf("") }
+    var amount by remember { mutableStateOf("") }
+    var isIncome by remember { mutableStateOf(true) }
 
     val balance = transactions.fold(100000.0) { acc, tx ->
         if (tx.isIncome) acc + tx.amount else acc - tx.amount
     }
+    val formatted = NumberFormat.getCurrencyInstance(Locale("id", "ID")).format(balance)
 
     Scaffold(
         topBar = {
@@ -64,7 +70,7 @@ fun DompetApp() {
             ) {
                 Column(modifier = Modifier.padding(24.dp)) {
                     Text("Total Saldo", color = MaterialTheme.colorScheme.onPrimary)
-                    Text("Rp $balance", color = MaterialTheme.colorScheme.onPrimary, fontSize = 32.sp, fontWeight = FontWeight.Bold)
+                    Text(formatted, color = MaterialTheme.colorScheme.onPrimary, fontSize = 32.sp, fontWeight = FontWeight.Bold)
                 }
             }
 
@@ -82,16 +88,12 @@ fun DompetApp() {
                         trailingContent = { Text("$sign Rp ${tx.amount}", color = color, fontWeight = FontWeight.Bold) },
                         colors = ListItemDefaults.colors(containerColor = Color.Transparent)
                     )
-                    Divider()
+                    HorizontalDivider()
                 }
             }
         }
 
         if (showDialog) {
-            var title by remember { mutableStateOf("") }
-            var amount by remember { mutableStateOf("") }
-            var isIncome by remember { mutableStateOf(true) }
-
             AlertDialog(
                 onDismissRequest = { showDialog = false },
                 title = { Text("Catat Transaksi") },
@@ -124,12 +126,20 @@ fun DompetApp() {
                         if (title.isNotBlank() && amount.isNotBlank()) {
                             val date = SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(Date())
                             transactions.add(Transaction(title, amount.toDouble(), isIncome, date))
+                            title = ""
+                            amount = ""
+                            isIncome = true
                             showDialog = false
                         }
                     }) { Text("Simpan") }
                 },
                 dismissButton = {
-                    TextButton(onClick = { showDialog = false }) { Text("Batal") }
+                    TextButton(onClick = {
+                        title = ""
+                        amount = ""
+                        isIncome = true
+                        showDialog = false
+                    }) { Text("Batal") }
                 }
             )
         }
