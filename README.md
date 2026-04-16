@@ -40,3 +40,9 @@ Proyek ini dibangun menggunakan teknologi pengembangan Android modern:
 1. **Clone repositori ini** ke mesin lokal kamu:
    ```bash
    git clone https://github.com/Punyaadapaa/MyDuit.git
+
+## 👥 Kelompok 2
+Anggota tim yang berkontribusi dalam pengembangan aplikasi ini:
+1. **Daffa Arkhan Aditama** (L0324010)
+2. **Muhammad Ihsaan Al Fikri** (L0324024)
+3. **Rizal Arief Zuhdi** (L0324031)
