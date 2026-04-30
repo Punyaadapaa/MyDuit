@@ -119,17 +119,28 @@ fun DashboardScreen(
 
             Spacer(Modifier.height(8.dp))
 
-            LazyColumn {
-                items(filteredTransactions) { tx ->
+            LazyColumn(
+                modifier = Modifier.weight(1f),
+                contentPadding = PaddingValues(bottom = 80.dp)
+            ) {
+                items(
+                    items = filteredTransactions,
+                    key = { tx -> tx.id }
+                ) { tx ->
                     val color = if (tx.isIncome) Color(0xFF4CAF50) else Color(0xFFE53935)
                     val sign = if (tx.isIncome) "+" else "-"
+
                     ListItem(
                         headlineContent = { Text(tx.title, fontWeight = FontWeight.Bold) },
                         supportingContent = { Text(tx.date) },
-                        trailingContent = { Text("$sign Rp ${tx.amount}", color = color,
-                            fontWeight = FontWeight.Bold) },
+                        trailingContent = {
+                            Text(
+                                "$sign Rp ${tx.amount}",
+                                color = color,
+                                fontWeight = FontWeight.Bold
+                            )
+                        },
                         colors = ListItemDefaults.colors(containerColor = Color.Transparent),
-                        // klik item → ke detail
                         modifier = Modifier.clickable {
                             backStack.add(TransactionDetail(tx.id))
                         }

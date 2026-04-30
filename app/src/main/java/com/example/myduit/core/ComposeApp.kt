@@ -42,7 +42,15 @@ fun ComposeApp() {
                     }
                     entry<TransactionDetail> {
                         val tx = transactions.find { t -> t.id == it.transactionId }
-                        if (tx != null) TransactionDetailScreen(tx)
+                        // PERUBAHAN DI SINI: Tambahkan parameter onDeleteTransaction
+                        if (tx != null) {
+                            TransactionDetailScreen(
+                                transaction = tx,
+                                onDeleteTransaction = { transactionToDelete ->
+                                    transactions.remove(transactionToDelete)
+                                }
+                            )
+                        }
                     }
                 }
             )
