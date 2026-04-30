@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -20,16 +19,13 @@ import kotlinx.coroutines.launch
 @Composable
 fun TransactionDetailScreen(
     transaction: Transaction,
-    // PERUBAHAN 1: Tambah parameter callback untuk fungsi hapus
     onDeleteTransaction: (Transaction) -> Unit
 ) {
     val backStack = LocalBackStack.current
 
-    // PERUBAHAN 2: Tambahkan state untuk mengontrol visibilitas komponen
     var showDeleteDialog by remember { mutableStateOf(false) }
     var showBottomSheet by remember { mutableStateOf(false) }
 
-    // State dan Coroutine untuk animasi Bottom Sheet yang aman
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
 
@@ -42,21 +38,22 @@ fun TransactionDetailScreen(
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Kembali")
                     }
                 },
-                // PERUBAHAN 3: Tambahkan tombol aksi di TopAppBar
                 actions = {
                     IconButton(onClick = { showDeleteDialog = true }) {
                         Icon(Icons.Default.Delete, contentDescription = "Hapus", tint = Color.Red)
-                    }
-                    IconButton(onClick = { showBottomSheet = true }) {
-                        Icon(Icons.Default.MoreVert, contentDescription = "Opsi Lain")
                     }
                 }
             )
         }
     ) { padding ->
-        // (Kode layout detail kamu tetap utuh dan sama persis di sini)
-        Column(modifier = Modifier.padding(padding).padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        // fillMaxSize()
+        Column(
+            modifier = Modifier
+                .padding(padding)
+                .padding(16.dp)
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
             Text(transaction.title, style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold)
             Text(transaction.date)
@@ -65,10 +62,20 @@ fun TransactionDetailScreen(
                 color = if (transaction.isIncome) Color(0xFF4CAF50) else Color(0xFFE53935),
                 fontWeight = FontWeight.Bold
             )
+
+            // Spacer if
+            Spacer(modifier = Modifier.weight(1f))
+
+            // Bottom Sheet
+            Button(
+                onClick = { showBottomSheet = true },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Opsi Tambahan")
+            }
         }
     }
 
-    // PERUBAHAN 4: Implementasi Alert Dialog (Ketentuan Praktikum)
     if (showDeleteDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteDialog = false },
@@ -79,8 +86,8 @@ fun TransactionDetailScreen(
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
                     onClick = {
                         showDeleteDialog = false
-                        onDeleteTransaction(transaction) // Menghapus data
-                        backStack.removeLastOrNull() // Kembali secara aman (tidak force close)
+                        onDeleteTransaction(transaction)
+                        backStack.removeLastOrNull()
                     }
                 ) {
                     Text("Hapus")
@@ -94,11 +101,9 @@ fun TransactionDetailScreen(
         )
     }
 
-    // PERUBAHAN 5: Implementasi Bottom Sheet (Ketentuan Praktikum)
     if (showBottomSheet) {
         ModalBottomSheet(
             onDismissRequest = {
-                // Menutup dengan aman menggunakan coroutine
                 scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
                     if (!bottomSheetState.isVisible) showBottomSheet = false
                 }
@@ -112,11 +117,9 @@ fun TransactionDetailScreen(
                 ListItem(
                     headlineContent = { Text("Bagikan Transaksi") },
                     modifier = Modifier.clickable {
-                        // Tutup otomatis jika diklik
                         scope.launch { bottomSheetState.hide() }.invokeOnCompletion { showBottomSheet = false }
                     }
                 )
-                // Spacer agar tidak menabrak batas bawah layar
                 Spacer(modifier = Modifier.height(32.dp))
             }
         }
