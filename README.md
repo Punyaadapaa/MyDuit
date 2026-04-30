@@ -17,7 +17,9 @@
 |<img width="360" alt="Tampilan Login" src="https://github.com/user-attachments/assets/9b18f6c1-0a2b-421c-a529-dea8cd6fc918" /> | <img width="360" alt="Dashboard Utama" src="https://github.com/user-attachments/assets/9e3edd6f-5237-43fb-a8b4-424d8c1fcbeb" /> | <img width="360" alt="Screenshot_20260424_155602" src="https://github.com/user-attachments/assets/00afc2da-0f32-4e3a-b622-168d7ec0eeff" /> | <img width="360" alt="Screenshot_20260424_155214" src="https://github.com/user-attachments/assets/789aaa4f-01c6-4445-a987-a2bf94377728" />|
 
 ## 📸 Update Tampilan Aplikasi
-
+| Login | Dashboard Utama | Catat Transasksi | Detail Transaksi |
+| :---: | :---: | :---: | :---: |
+| | | | |
 
 
 ---
