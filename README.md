@@ -48,6 +48,8 @@ Fitur ini menggunakan konsep **passing parameter antar layar**, di mana ID trans
 
 ## 🧭 Alur Navigasi
 
+```
+
 LoginScreen
 │
 │ backStack.add(Dashboard)
@@ -61,6 +63,8 @@ TransactionDetailScreen
 │ backStack.removeLastOrNull()
 ▼
 DashboardScreen
+
+```
 
 ---
 
@@ -80,6 +84,8 @@ DashboardScreen
 
 ## 📁 Struktur Folder
 
+```
+
 app/src/main/java/com/example/myduit/
 ├── core/
 ├── navigation/
@@ -87,6 +93,7 @@ app/src/main/java/com/example/myduit/
 ├── ui/theme/
 └── MainActivity.kt
 
+```
 
 ---
 
