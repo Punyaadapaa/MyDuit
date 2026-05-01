@@ -124,9 +124,10 @@ app/src/main/java/com/example/myduit/
 
 ## 👥 Kelompok 2
 
-1. Daffa Arkhan Aditama — L0324010  
-2. Muhammad Ihsaan Al Fikri — L0324024  
-3. Rizal Arief Zuhdi — L0324031  
+Aplikasi ini dikembangkan oleh:
+1. [**Daffa Arkhan Aditama**](https://github.com/Punyaadapaa) (L0324010)
+2. [**Muhammad Ihsaan Al Fikri**](https://github.com/Ihsaanalf) (L0324024)
+3. [**Rizal Arief Zuhdi**](https://github.com/rxl2-wqwq) (L0324031) 
 
 ---
 
