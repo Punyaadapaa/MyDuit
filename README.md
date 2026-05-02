@@ -60,10 +60,6 @@ Implementasi komponen UI lanjutan berbasis Compose:
 Halaman Detail Transaksi menampilkan informasi lengkap transaksi yang dipilih, termasuk nama, tanggal, dan nominal. Terdapat tombol hapus (🗑️) di TopAppBar yang memunculkan Alert Dialog konfirmasi sebelum data dihapus.
 
 Di bagian bawah terdapat tombol "Opsi Tambahan" yang membuka Bottom Sheet berisi aksi tambahan seperti Bagikan Transaksi. Halaman ini menerima data melalui passing parameter berupa ID transaksi dari Dashboard.
-=======
-| Login | Dashboard Utama | Catat Transaksi | Detail Transaksi |
-| :---: | :---: | :---: | :---: |
-| <img width="360" src="https://github.com/user-attachments/assets/9b18f6c1-0a2b-421c-a529-dea8cd6fc918" /> | <img width="360" src="https://github.com/user-attachments/assets/9e3edd6f-5237-43fb-a8b4-424d8c1fcbeb" /> | <img width="360" src="https://github.com/user-attachments/assets/00afc2da-0f32-4e3a-b622-168d7ec0eeff" /> | <img width="360" src="https://github.com/user-attachments/assets/789aaa4f-01c6-4445-a987-a2bf94377728" /> |
 
 ---
 
