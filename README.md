@@ -55,7 +55,7 @@ Implementasi komponen UI lanjutan berbasis Compose:
 
 |                                                         Detail Transaksi                                                         |                                                         Opsi Tambahan                                                         |
 | :------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------: |
-| <img width="240" alt="Detail Transaksi" src="https://github.com/user-attachments/assets/c1f3be18-4c42-4739-8561-348bd581dd97" /> | <img width="240" alt="Opsi Tambahan" src="https://github.com/user-attachments/assets/dc2a58e0-b05f-4150-ae83-55c4716262c4" /> |
+| <img width="220" alt="Detail Transaksi" src="https://github.com/user-attachments/assets/c1f3be18-4c42-4739-8561-348bd581dd97" /> | <img width="220" alt="Opsi Tambahan" src="https://github.com/user-attachments/assets/dc2a58e0-b05f-4150-ae83-55c4716262c4" /> |
 
 Halaman Detail Transaksi menampilkan informasi lengkap transaksi yang dipilih, termasuk nama, tanggal, dan nominal. Terdapat tombol hapus (🗑️) di TopAppBar yang memunculkan Alert Dialog konfirmasi sebelum data dihapus.
 
