@@ -47,7 +47,7 @@ Implementasi komponen UI lanjutan berbasis Compose:
 
 |                                                   Login                                                   |                                              Dashboard Utama                                              |                                              Catat Transaksi                                              |                                             Detail Transaksi                                              |
 | :-------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------: |
-| <img width="360" src="https://github.com/user-attachments/assets/9b18f6c1-0a2b-421c-a529-dea8cd6fc918" /> | <img width="360" src="https://github.com/user-attachments/assets/9e3edd6f-5237-43fb-a8b4-424d8c1fcbeb" /> | <img width="360" src="https://github.com/user-attachments/assets/00afc2da-0f32-4e3a-b622-168d7ec0eeff" /> | <img width="360" src="https://github.com/user-attachments/assets/789aaa4f-01c6-4445-a987-a2bf94377728" /> |
+| <img width="395" alt="Login" src="https://github.com/user-attachments/assets/eecde809-3f27-4abd-bc2d-a0db4948bbde" /> | <img width="360" src="https://github.com/user-attachments/assets/9e3edd6f-5237-43fb-a8b4-424d8c1fcbeb" /> | <img width="370" src="https://github.com/user-attachments/assets/00afc2da-0f32-4e3a-b622-168d7ec0eeff" /> | <img width="370" src="https://github.com/user-attachments/assets/789aaa4f-01c6-4445-a987-a2bf94377728" /> |
 
 ---
 
@@ -55,7 +55,7 @@ Implementasi komponen UI lanjutan berbasis Compose:
 
 |                                                         Detail Transaksi                                                         |                                                         Opsi Tambahan                                                         |
 | :------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------: |
-| <img width="220" alt="Detail Transaksi" src="https://github.com/user-attachments/assets/c1f3be18-4c42-4739-8561-348bd581dd97" /> | <img width="220" alt="Opsi Tambahan" src="https://github.com/user-attachments/assets/dc2a58e0-b05f-4150-ae83-55c4716262c4" /> |
+| <img width="215" alt="Detail Transaksi" src="https://github.com/user-attachments/assets/c1f3be18-4c42-4739-8561-348bd581dd97" /> | <img width="215" alt="Opsi Tambahan" src="https://github.com/user-attachments/assets/dc2a58e0-b05f-4150-ae83-55c4716262c4" /> |
 
 Halaman Detail Transaksi menampilkan informasi lengkap transaksi yang dipilih, termasuk nama, tanggal, dan nominal. Terdapat tombol hapus (🗑️) di TopAppBar yang memunculkan Alert Dialog konfirmasi sebelum data dihapus.
 
