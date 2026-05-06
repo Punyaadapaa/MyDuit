@@ -117,29 +117,22 @@ DashboardScreen
 
 ```
 
-java/com/example/myduit/
-│
-├── core/
-│   └── ComposeApp.kt
-│
-├── navigation/
-│   ├── Compositions.kt
-│   └── Routes.kt
-│
-├── screens/
-│   ├── login/
-│   │   └── LoginScreen.kt
-│   ├── dashboard/
-│   │   └── Dashboard.kt
-│   └── transaction/
-│       └── TransactionDetail.kt
-│
-├── ui/theme/
-│   ├── Color.kt
-│   ├── Theme.kt
-│   └── Type.kt
-│
-└── MainActivity.kt
+└── java/com/example/myduit//
+    ├── core/
+    │   └── ComposeApp.kt
+    ├── navigation/
+    │   ├── Compositions.kt
+    │   └── Routes.kt
+    ├── screens/
+    │   ├── LoginScreen.kt
+    │   ├── Dashboard.kt
+    │   └── TransactionDetail.kt
+    ├── ui/theme/
+    │   ├── Color.kt
+    │   ├── theme.kt
+    │   └── Type.kt
+    └── MainActivity.kt
+
 
 ```
 
