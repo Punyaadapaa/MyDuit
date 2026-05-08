@@ -147,17 +147,6 @@ DashboardScreen
 4. Jalankan di Emulator / Device
 
 
-## 📋 Checklist Tugas
-
-- [x] Material 3
-- [x] Navigation 3
-- [x] Routing
-- [x] Back Navigation
-- [x] Passing Parameter
-- [x] Conditional Navigation
-- [x] Bottom Sheet
-- [x] Delete Transaksi
-
 ---
 
 ## 👥 Kelompok 2
