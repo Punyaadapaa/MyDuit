@@ -8,21 +8,28 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.myduit.data.UserPreferencesDataStore
 import com.example.myduit.navigation.Dashboard
 import com.example.myduit.navigation.LocalBackStack
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen() {
     val backStack = LocalBackStack.current
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val dataStore = remember { UserPreferencesDataStore(context) }
+
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var showError by remember { mutableStateOf(false) }
-    var passwordVisible by remember { mutableStateOf(false) }  // ← tambah ini
+    var passwordVisible by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier.fillMaxSize().padding(32.dp),
@@ -41,7 +48,6 @@ fun LoginScreen() {
         )
         Spacer(Modifier.height(12.dp))
 
-        // ← Password field dengan toggle show/hide
         OutlinedTextField(
             value = password,
             onValueChange = { password = it; showError = false },
@@ -53,15 +59,12 @@ fun LoginScreen() {
             else
                 PasswordVisualTransformation(),
             trailingIcon = {
-                val icon = if (passwordVisible)
-                    Icons.Filled.Visibility
-                else
-                    Icons.Filled.VisibilityOff
-
-                val description = if (passwordVisible) "Sembunyikan password" else "Tampilkan password"
-
+                val icon = if (passwordVisible) Icons.Filled.Visibility
+                else Icons.Filled.VisibilityOff
+                val desc = if (passwordVisible) "Sembunyikan password"
+                else "Tampilkan password"
                 IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                    Icon(imageVector = icon, contentDescription = description)
+                    Icon(imageVector = icon, contentDescription = desc)
                 }
             }
         )
@@ -78,6 +81,10 @@ fun LoginScreen() {
         Button(
             onClick = {
                 if (username.isNotBlank() && password.isNotBlank()) {
+                    // Simpan username ke DataStore secara async sebelum navigasi
+                    scope.launch {
+                        dataStore.saveUsername(username)
+                    }
                     backStack.add(Dashboard)
                 } else {
                     showError = true
