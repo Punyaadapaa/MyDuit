@@ -62,7 +62,7 @@ Mekanisme penyimpanan yang digunakan adalah **Preferences DataStore** dari Jetpa
 
 |                                                   Login                                                   |                                              Dashboard Utama                                              |                                              Catat Transaksi                                              |                                             Detail Transaksi                                              |
 | :-------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------: |
-| <img width="395" alt="Login" src="https://github.com/user-attachments/assets/eecde809-3f27-4abd-bc2d-a0db4948bbde" /> | <img width="360" src="https://github.com/user-attachments/assets/9e3edd6f-5237-43fb-a8b4-424d8c1fcbeb" /> | <img width="370" src="https://github.com/user-attachments/assets/00afc2da-0f32-4e3a-b622-168d7ec0eeff" /> | <img width="370" src="https://github.com/user-attachments/assets/789aaa4f-01c6-4445-a987-a2bf94377728" /> |
+| <img width="395" alt="login" src="https://github.com/user-attachments/assets/19876284-1fd8-4236-913e-96f598ea2e85" /> | <img width="360" alt="image" src="https://github.com/user-attachments/assets/5ecf43ce-7b29-409f-8e1a-3efec927b4a4" /> | <img width="360" alt="image" src="https://github.com/user-attachments/assets/837db808-a590-476b-ba7f-ac68d4fbb683" /> | <img width="370" src="https://github.com/user-attachments/assets/789aaa4f-01c6-4445-a987-a2bf94377728" /> |
 
 ---
 
@@ -201,7 +201,7 @@ Aplikasi ini dikembangkan oleh:
 
 ---
 
-📚 Referensi:
+## 📚 Referensi:
 1. https://developer.android.com/guide/navigation/navigation-3?hl=id
 2. https://developer.android.com/topic/libraries/architecture/datastore
 3. https://github.com/rizalanggoro/ppab-2026/blob/main/week-06/tugas.md
