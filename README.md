@@ -13,6 +13,7 @@
 
 ## 📋 Checklist Tugas PAB
 
+### Week 6
 - [x] Menggunakan Material 3 dan Jetpack Compose
 - [x] Implementasi Navigation 3 (`NavDisplay` + `LocalBackStack`)
 - [x] Basic Routing — semua tombol utama berfungsi (`backStack.add`)
@@ -24,6 +25,8 @@
 - [x] **Alert Dialog** — form tambah transaksi + konfirmasi hapus
 - [x] **Bottom Sheet** — opsi tambahan di halaman detail transaksi
 - [x] Aplikasi tidak crash saat perpindahan layar berulang
+
+### Week 9
 - [x] Memilih mekanisme penyimpanan yang sesuai (Preferences DataStore)
 - [x] Menjelaskan alasan pemilihan penyimpanan data
 - [x] Membuat class `UserPreferencesDataStore` dengan operasi save, read, clear
