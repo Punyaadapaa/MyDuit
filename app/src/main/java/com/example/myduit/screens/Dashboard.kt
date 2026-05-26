@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.sp
 import com.example.myduit.Transaction
 import com.example.myduit.data.UserPreferencesDataStore
 import com.example.myduit.navigation.LocalBackStack
-import com.example.myduit.navigation.Login
 import com.example.myduit.navigation.TransactionDetail
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
@@ -76,7 +75,10 @@ fun DashboardScreen(
                     IconButton(onClick = {
                         scope.launch {
                             dataStore.clearUsername()
-                            backStack.removeLastOrNull()
+                            // Clear semua backstack sampai ke Login
+                            while (backStack.size > 1) {
+                                backStack.removeLastOrNull()
+                            }
                         }
                     }) {
                         Icon(
