@@ -8,7 +8,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -20,11 +19,9 @@ import com.example.myduit.navigation.LocalBackStack
 import kotlinx.coroutines.launch
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(dataStore: UserPreferencesDataStore) {
     val backStack = LocalBackStack.current
-    val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val dataStore = remember { UserPreferencesDataStore(context) }
 
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -81,7 +78,6 @@ fun LoginScreen() {
         Button(
             onClick = {
                 if (username.isNotBlank() && password.isNotBlank()) {
-                    // Simpan username ke DataStore secara async sebelum navigasi
                     scope.launch {
                         dataStore.saveUsername(username)
                     }

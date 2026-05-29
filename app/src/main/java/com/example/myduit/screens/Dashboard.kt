@@ -13,7 +13,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -31,14 +30,12 @@ import java.util.*
 @Composable
 fun DashboardScreen(
     transactions: MutableList<Transaction>,
-    onAddTransaction: (Transaction) -> Unit
+    onAddTransaction: (Transaction) -> Unit,
+    dataStore: UserPreferencesDataStore
 ) {
     val backStack = LocalBackStack.current
-    val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val dataStore = remember { UserPreferencesDataStore(context) }
 
-    // Collect username dari DataStore sebagai State
     val username by dataStore.usernameFlow.collectAsState(initial = "")
 
     var showDialog by remember { mutableStateOf(false) }
@@ -71,11 +68,9 @@ fun DashboardScreen(
                     containerColor = MaterialTheme.colorScheme.primaryContainer
                 ),
                 actions = {
-                    // Tombol Logout — clear DataStore lalu kembali ke Login
                     IconButton(onClick = {
                         scope.launch {
                             dataStore.clearUsername()
-                            // Clear semua backstack sampai ke Login
                             while (backStack.size > 1) {
                                 backStack.removeLastOrNull()
                             }
@@ -97,7 +92,6 @@ fun DashboardScreen(
     ) { padding ->
         Column(modifier = Modifier.padding(padding).padding(16.dp).fillMaxSize()) {
 
-            // Sapaan menggunakan username dari DataStore
             if (username.isNotBlank()) {
                 Text(
                     text = "Halo, $username 👋",
