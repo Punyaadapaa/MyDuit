@@ -10,6 +10,7 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import com.example.myduit.Transaction
+import com.example.myduit.data.UserPreferencesDataStore
 import com.example.myduit.navigation.LocalBackStack
 import com.example.myduit.navigation.Login
 import com.example.myduit.navigation.Dashboard
@@ -20,7 +21,7 @@ import com.example.myduit.screens.TransactionDetailScreen
 import com.example.myduit.ui.theme.MyDuitTheme
 
 @Composable
-fun ComposeApp() {
+fun ComposeApp(userPreferencesDataStore: UserPreferencesDataStore) {
     val backStack = rememberNavBackStack(Login)
     val transactions = remember { mutableStateListOf<Transaction>() }
 
@@ -35,14 +36,17 @@ fun ComposeApp() {
                 ),
                 entryProvider = entryProvider {
                     entry<Login> {
-                        LoginScreen()
+                        LoginScreen(dataStore = userPreferencesDataStore)
                     }
                     entry<Dashboard> {
-                        DashboardScreen(transactions) { transactions.add(it) }
+                        DashboardScreen(
+                            transactions = transactions,
+                            onAddTransaction = { transactions.add(it) },
+                            dataStore = userPreferencesDataStore
+                        )
                     }
                     entry<TransactionDetail> {
                         val tx = transactions.find { t -> t.id == it.transactionId }
-                        // parameter onDeleteTransaction
                         if (tx != null) {
                             TransactionDetailScreen(
                                 transaction = tx,
