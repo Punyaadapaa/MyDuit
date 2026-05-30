@@ -6,6 +6,7 @@
 ![Navigation 3](https://img.shields.io/badge/Navigation_3-RC01-orange?style=for-the-badge)
 ![Material 3](https://img.shields.io/badge/Material_3-757575?style=for-the-badge&logo=material-design&logoColor=white)
 ![DataStore](https://img.shields.io/badge/DataStore-Preferences-blue?style=for-the-badge)
+![Hilt](https://img.shields.io/badge/Hilt-DI-red?style=for-the-badge)
 
 **MyDuit** adalah aplikasi Android berbasis Jetpack Compose yang dirancang untuk membantu mencatat dan melacak arus kas (pemasukan dan pengeluaran) harian dengan mudah dan cepat.
 
@@ -34,6 +35,15 @@
 - [x] Menampilkan username sebagai sapaan di Dashboard via `collectAsState`
 - [x] Menghapus data saat logout dan navigasi kembali ke Login
 
+### Week 10
+- [x] Menambahkan Hilt sebagai Dependency Injection framework
+- [x] Membuat `MyApplication` dengan anotasi `@HiltAndroidApp`
+- [x] Membuat Hilt module `UserPreferencesModule` dengan `@Provides` dan `@Singleton`
+- [x] Mendaftarkan `MyApplication` di `AndroidManifest.xml`
+- [x] Anotasi `@AndroidEntryPoint` pada `MainActivity`
+- [x] Inject `UserPreferencesDataStore` via `@Inject` di `MainActivity`
+- [x] Menghapus instansiasi manual `remember { UserPreferencesDataStore(context) }` di semua screen
+
 ---
 
 ## 🗄️ Penyimpanan Data
@@ -58,6 +68,22 @@ Mekanisme penyimpanan yang digunakan adalah **Preferences DataStore** dari Jetpa
 - `saveUsername(username)` — menyimpan username saat login berhasil
 - `usernameFlow` — membaca username sebagai Flow, ditampilkan sebagai sapaan di Dashboard
 - `clearUsername()` — menghapus data saat logout
+
+---
+
+## 💉 Dependency Injection dengan Hilt
+
+Sejak Week 10, `UserPreferencesDataStore` dikelola sepenuhnya oleh Hilt sebagai singleton.
+
+### Kenapa Hilt?
+
+Sebelumnya setiap screen bikin instance `UserPreferencesDataStore` sendiri lewat `remember { UserPreferencesDataStore(context) }`. Cara ini rawan bug — kalau ada dua instance berbeda, state bisa tidak sinkron. Hilt memastikan satu instance saja yang hidup sepanjang lifecycle aplikasi.
+
+### Struktur DI
+
+- `MyApplication` — entry point Hilt, dianotasi `@HiltAndroidApp`
+- `di/UserPreferencesModule` — menyediakan `UserPreferencesDataStore` sebagai `@Singleton`
+- `MainActivity` — dianotasi `@AndroidEntryPoint`, menerima inject dan meneruskan ke `ComposeApp`
 
 ---
 
@@ -103,12 +129,14 @@ konfirmasi Alert Dialog, dan tombol Opsi Tambahan yang membuka Bottom Sheet.
 - 🗑️ Hapus transaksi
 - 🚪 Logout dengan clear session
 - 🎨 UI Material 3 modern
+- 💉 Dependency Injection dengan Hilt
 
 ---
 
 ## 🧭 Alur Navigasi
 
 ```
+
 LoginScreen
 │
 │ saveUsername(username) → DataStore
@@ -130,33 +158,39 @@ DashboardScreen
 │ backStack.removeLastOrNull()
 ▼
 LoginScreen
+
 ```
 
 ---
 
 ## 🛠️ Teknologi yang Digunakan
 
-| Teknologi              | Versi          | Kegunaan                    |
-| ---------------------- | -------------- | --------------------------- |
-| Kotlin                 | 2.0.21         | Bahasa utama                |
-| Jetpack Compose        | BOM 2025.05.00 | UI                          |
-| Material Design 3      | -              | UI Design                   |
-| Navigation 3           | 1.0.0-rc01     | Navigasi                    |
-| ViewModel Nav3         | 2.9.0-alpha03  | State                       |
-| Serialization          | 1.7.3          | Routing                     |
-| Material Icons         | -              | Icon                        |
-| DataStore Preferences  | 1.1.4          | Persistensi sesi pengguna   |
+| Teknologi              | Versi          | Kegunaan                            |
+| ---------------------- | -------------- | ----------------------------------- |
+| Kotlin                 | 2.0.21         | Bahasa utama                        |
+| Jetpack Compose        | BOM 2025.05.00 | UI                                  |
+| Material Design 3      | -              | UI Design                           |
+| Navigation 3           | 1.0.0-rc01     | Navigasi                            |
+| ViewModel Nav3         | 2.9.0-alpha03  | State                               |
+| Serialization          | 1.7.3          | Routing                             |
+| Material Icons         | -              | Icon                                |
+| DataStore Preferences  | 1.1.4          | Persistensi sesi pengguna           |
+| Hilt                   | 2.59.2         | Dependency Injection                |
+| KSP                    | 2.0.21-1.0.27  | Annotation processor untuk Hilt     |
 
 ---
 
 ## 📁 Struktur Folder
 
 ```
+
 └── java/com/example/myduit/
 ├── core/
 │   └── ComposeApp.kt
 ├── data/
-│   └── UserPreferencesDataStore.kt   ← NEW (Week 9)
+│   └── UserPreferencesDataStore.kt
+├── di/
+│   └── UserPreferencesModule.kt        ← NEW (Week 10)
 ├── navigation/
 │   ├── Compositions.kt
 │   └── Routes.kt
@@ -168,7 +202,9 @@ LoginScreen
 │   ├── Color.kt
 │   ├── Theme.kt
 │   └── Type.kt
-└── MainActivity.kt
+├── MainActivity.kt
+└── MyApplication.kt                    ← NEW (Week 10)
+
 ```
 
 ---
@@ -207,5 +243,7 @@ Aplikasi ini dikembangkan oleh:
 ## 📚 Referensi:
 1. https://developer.android.com/guide/navigation/navigation-3?hl=id
 2. https://developer.android.com/topic/libraries/architecture/datastore
-3. https://github.com/rizalanggoro/ppab-2026/blob/main/week-06/tugas.md
-4. https://github.com/rizalanggoro/ppab-2026/blob/main/week-09/materi.md
+3. https://developer.android.com/training/dependency-injection/hilt-android
+4. https://github.com/rizalanggoro/ppab-2026/blob/main/week-06/tugas.md
+5. https://github.com/rizalanggoro/ppab-2026/blob/main/week-09/materi.md
+6. https://github.com/rizalanggoro/ppab-2026/blob/main/week-10/materi.md
