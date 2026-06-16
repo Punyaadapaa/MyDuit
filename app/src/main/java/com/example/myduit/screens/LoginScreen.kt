@@ -13,13 +13,16 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.myduit.data.UserPreferencesDataStore
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myduit.navigation.Dashboard
 import com.example.myduit.navigation.LocalBackStack
+import com.example.myduit.ui.AuthViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun LoginScreen(dataStore: UserPreferencesDataStore) {
+fun LoginScreen(
+    authViewModel: AuthViewModel = hiltViewModel()
+) {
     val backStack = LocalBackStack.current
     val scope = rememberCoroutineScope()
 
@@ -79,7 +82,7 @@ fun LoginScreen(dataStore: UserPreferencesDataStore) {
             onClick = {
                 if (username.isNotBlank() && password.isNotBlank()) {
                     scope.launch {
-                        dataStore.saveUsername(username)
+                        authViewModel.saveUsername(username)
                     }
                     backStack.add(Dashboard)
                 } else {
