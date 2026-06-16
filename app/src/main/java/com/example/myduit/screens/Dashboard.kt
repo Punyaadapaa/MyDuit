@@ -340,7 +340,7 @@ fun DashboardScreen(
                         OutlinedTextField(
                             value = amount,
                             onValueChange = { newValue ->
-                                amount = newValue.filter { it.isDigit() }
+                                amount = newValue.filter { it.isDigit() }.trimStart('0')
                             },
                             label = { Text("Nominal") },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
