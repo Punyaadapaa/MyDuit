@@ -1,7 +1,9 @@
 package com.example.myduit.data.remote
 
+import com.google.gson.annotations.SerializedName
+
 data class CurrencyResponse(
-    val result: String,
-    val base_code: String,
-    val rates: Map<String, Double>
+    @SerializedName("result") val result: String,
+    @SerializedName("base_code") val baseCode: String,
+    @SerializedName("rates") val rates: Map<String, Double>
 )
