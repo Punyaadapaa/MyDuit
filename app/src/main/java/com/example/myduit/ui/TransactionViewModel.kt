@@ -1,28 +1,33 @@
 package com.example.myduit.ui
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.myduit.data.model.Transaction
+import com.example.myduit.data.repository.TransactionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TransactionViewModel @Inject constructor() : ViewModel() {
+class TransactionViewModel @Inject constructor(
+    private val repository: TransactionRepository
+) : ViewModel() {
 
-    private val _transactions = MutableStateFlow<List<Transaction>>(emptyList())
-    val transactions: StateFlow<List<Transaction>> = _transactions.asStateFlow()
+    val transactions: StateFlow<List<Transaction>> = repository.getAllTransactions()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     fun addTransaction(transaction: Transaction) {
-        _transactions.value = _transactions.value + transaction
+        viewModelScope.launch { repository.insert(transaction) }
     }
 
     fun deleteTransaction(transaction: Transaction) {
-        _transactions.value = _transactions.value.filter { it.id != transaction.id }
+        viewModelScope.launch { repository.delete(transaction) }
     }
 
     fun getTransactionById(id: String): Transaction? {
-        return _transactions.value.find { it.id == id }
+        return transactions.value.find { it.id == id }
     }
 }
