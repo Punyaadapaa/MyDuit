@@ -27,7 +27,7 @@ class TransactionViewModel @Inject constructor(
         viewModelScope.launch { repository.delete(transaction) }
     }
 
-    fun getTransactionById(id: String): Transaction? {
-        return transactions.value.find { it.id == id }
+    suspend fun getById(id: String): Transaction? {
+        return repository.getById(id)
     }
 }

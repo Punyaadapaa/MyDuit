@@ -29,9 +29,22 @@ fun TransactionDetailScreen(
     val backStack = LocalBackStack.current
     val context = LocalContext.current
 
-    // remember agar tidak null saat recompose setelah delete (mencegah double-pop)
-    val transaction = remember { transactionViewModel.getTransactionById(transactionId) }
+    var transactionState by remember { mutableStateOf<Transaction?>(null) }
+    var isLoading by remember { mutableStateOf(true) }
 
+    LaunchedEffect(transactionId) {
+        transactionState = transactionViewModel.getById(transactionId)
+        isLoading = false
+    }
+
+    if (isLoading) {
+        Box(Modifier.fillMaxSize(), contentAlignment = androidx.compose.ui.Alignment.Center) {
+            CircularProgressIndicator()
+        }
+        return
+    }
+
+    val transaction = transactionState
     // Kalau transaksi tidak ditemukan dari awal (ID invalid), langsung kembali
     if (transaction == null) {
         LaunchedEffect(Unit) { backStack.removeLastOrNull() }
