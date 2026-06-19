@@ -16,19 +16,18 @@ class CurrencyViewModel @Inject constructor(
     private val repository: CurrencyRepository
 ) : ViewModel() {
 
-    private val _rateState = MutableStateFlow<UiState<Double>>(UiState.Idle)
-    val rateState: StateFlow<UiState<Double>> = _rateState.asStateFlow()
+    private val _rateState = MutableStateFlow<UiState<Map<String, Double>>>(UiState.Idle)
+    val rateState: StateFlow<UiState<Map<String, Double>>> = _rateState.asStateFlow()
 
-    fun loadUsdToIdr() {
+    fun loadRates() {
         viewModelScope.launch {
             _rateState.value = UiState.Loading
             try {
                 val response = repository.getRate("USD")
-                val rate = response.rates["IDR"]
-                if (rate != null) {
-                    _rateState.value = UiState.Success(rate)
+                if (response.rates.isNotEmpty()) {
+                    _rateState.value = UiState.Success(response.rates)
                 } else {
-                    _rateState.value = UiState.Error("Kurs IDR tidak ditemukan")
+                    _rateState.value = UiState.Error("Data kurs kosong")
                 }
             } catch (e: Exception) {
                 _rateState.value = UiState.Error("Gagal ambil kurs, cek koneksi")

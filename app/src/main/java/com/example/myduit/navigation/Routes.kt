@@ -13,3 +13,6 @@ object Dashboard : AppRoute
 
 @Serializable
 data class TransactionDetail(val transactionId: String) : AppRoute
+
+@Serializable
+object Currency : AppRoute
