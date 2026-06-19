@@ -57,7 +57,7 @@ fun DashboardScreen(
     val transactions by transactionViewModel.transactions.collectAsState()
     val rateState by currencyViewModel.rateState.collectAsState()
 
-    LaunchedEffect(Unit) { currencyViewModel.loadUsdToIdr() }
+    LaunchedEffect(Unit) { currencyViewModel.loadRates() }
 
     var showDialog by remember { mutableStateOf(false) }
     var title by remember { mutableStateOf("") }
@@ -177,21 +177,28 @@ fun DashboardScreen(
 
             Spacer(Modifier.height(12.dp))
 
-            // Kurs USD → IDR card dengan UiState
-            Card(modifier = Modifier.fillMaxWidth()) {
+            // Kurs USD → IDR summary card (clickable)
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { backStack.add(com.example.myduit.navigation.Currency) }
+            ) {
                 Row(
                     modifier = Modifier.padding(16.dp).fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Kurs USD \u2192 IDR", fontSize = 13.sp)
+                    Text("Kurs USD \u2192 IDR (Detail >)", fontSize = 13.sp)
                     when (val state = rateState) {
                         is UiState.Idle -> Text("-")
                         is UiState.Loading -> CircularProgressIndicator(modifier = Modifier.size(16.dp))
-                        is UiState.Success -> Text(
-                            "Rp ${formatRupiah(state.data.toLong())}",
-                            fontWeight = FontWeight.Bold
-                        )
+                        is UiState.Success -> {
+                            val idrRate = state.data["IDR"] ?: 0.0
+                            Text(
+                                "Rp ${formatRupiah(idrRate.toLong())}",
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
                         is UiState.Error -> Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(4.dp)
@@ -202,7 +209,7 @@ fun DashboardScreen(
                                 color = MaterialTheme.colorScheme.error
                             )
                             IconButton(
-                                onClick = { currencyViewModel.loadUsdToIdr() },
+                                onClick = { currencyViewModel.loadRates() },
                                 modifier = Modifier.size(24.dp)
                             ) {
                                 Icon(
