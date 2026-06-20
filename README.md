@@ -7,6 +7,7 @@
 ![Material 3](https://img.shields.io/badge/Material_3-757575?style=for-the-badge&logo=material-design&logoColor=white)
 ![DataStore](https://img.shields.io/badge/DataStore-Preferences-blue?style=for-the-badge)
 ![Hilt](https://img.shields.io/badge/Hilt-DI-red?style=for-the-badge)
+![Retrofit](https://img.shields.io/badge/Retrofit-2.9.0-48B983?style=for-the-badge)
 
 **MyDuit** adalah aplikasi Android berbasis Jetpack Compose yang dirancang untuk membantu mencatat dan melacak arus kas (pemasukan dan pengeluaran) harian dengan mudah dan cepat.
 
@@ -15,6 +16,7 @@
 ## 📋 Checklist Tugas PAB
 
 ### Week 6
+
 - [x] Menggunakan Material 3 dan Jetpack Compose
 - [x] Implementasi Navigation 3 (`NavDisplay` + `LocalBackStack`)
 - [x] Basic Routing — semua tombol utama berfungsi (`backStack.add`)
@@ -28,6 +30,7 @@
 - [x] Aplikasi tidak crash saat perpindahan layar berulang
 
 ### Week 9
+
 - [x] Memilih mekanisme penyimpanan yang sesuai (Preferences DataStore)
 - [x] Menjelaskan alasan pemilihan penyimpanan data
 - [x] Membuat class `UserPreferencesDataStore` dengan operasi save, read, clear
@@ -36,6 +39,7 @@
 - [x] Menghapus data saat logout dan navigasi kembali ke Login
 
 ### Week 10
+
 - [x] Menambahkan Hilt sebagai Dependency Injection framework
 - [x] Membuat `MyApplication` dengan anotasi `@HiltAndroidApp`
 - [x] Membuat Hilt module `UserPreferencesModule` dengan `@Provides` dan `@Singleton`
@@ -44,24 +48,38 @@
 - [x] Inject `UserPreferencesDataStore` via `@Inject` di `MainActivity`
 - [x] Menghapus instansiasi manual `remember { UserPreferencesDataStore(context) }` di semua screen
 
+### Week 11
+
+- [x] Menggunakan Retrofit dan Gson untuk mengambil data kurs mata uang dari API publik
+- [x] Membuat layer Repository untuk pemanggilan API dan operasi database lokal
+- [x] Menangani state pemanggilan API menggunakan `UiState` (Idle, Loading, Success, Error)
+- [x] Membuat layar terpisah (`CurrencyScreen`) untuk merender daftar lengkap mata uang dari API dengan `LazyColumn`
+- [x] Migrasi penyimpanan riwayat transaksi ke Room Database (`@Entity`, `@Dao`, `@Database`)
+- [x] Menggunakan Flow dari Room DAO untuk update UI reaktif secara otomatis
+- [x] Integrasi Room dan Retrofit dengan Dependency Injection (Hilt)
+
 ---
 
 ## 🗄️ Penyimpanan Data
 
-Mekanisme penyimpanan yang digunakan adalah **Preferences DataStore** dari Jetpack.
+Mekanisme penyimpanan yang digunakan terbagi menjadi dua, sesuai peruntukannya:
 
-### Kenapa DataStore, bukan yang lain?
+1. **Preferences DataStore** untuk preferensi user ringan (session/login).
+2. **Room Database** (SQLite) untuk data transaksional yang terstruktur.
 
-**File Storage** tidak cocok karena data yang disimpan hanya berupa username (String sederhana), bukan file besar seperti gambar, video, atau dokumen. File Storage lebih tepat kalau MyDuit mau fitur export transaksi ke `.csv` misalnya.
+### Preferences DataStore (Session Management)
 
-**SharedPreferences** secara fungsional bisa, tapi Google sudah terang-terangan menyarankan migrasi ke DataStore untuk project baru. Masalah utamanya: API synchronous-nya tidak aman dipanggil dari UI thread, tidak ada mekanisme error handling bawaan, dan tidak mendukung Flow secara native sehingga tidak reaktif.
+Digunakan untuk menyimpan string _username_ saat user berhasil login.
 
-**Preferences DataStore** dipilih karena:
-1. Data yang disimpan bertipe sederhana (String username), cocok dengan key-value storage
-2. Async by default lewat Kotlin Coroutine + Flow, aman dari ANR
-3. Terintegrasi natural dengan `collectAsState()` di Jetpack Compose
-4. Error handling built-in
-5. Rekomendasi resmi Google sebagai pengganti SharedPreferences
+- **Kenapa bukan SharedPreferences?** API Google menyarankan migrasi ke DataStore karena async-friendly (coroutines + flow) dan aman dari ANR.
+- Menghasilkan sapaan reaktif di Dashboard via `collectAsState`.
+
+### Room Database (Transaction History)
+
+Sejak Week 11, data transaksi di-persist menggunakan Room SQLite.
+
+- **Kenapa Room?** Transaksi keuangan butuh validitas relasional. Room mempermudah konversi objek Kotlin (`@Entity`) menjadi tabel database dengan _compile-time verification_ via `@Dao`.
+- Penggunaan `Flow<List<Transaction>>` membuat _repository_ reaktif. Setiap ada `insert` atau `delete`, UI di Dashboard otomatis _re-compose_ tanpa _manual refresh_.
 
 ### Yang Diimplementasikan
 
@@ -82,15 +100,26 @@ Sebelumnya setiap screen bikin instance `UserPreferencesDataStore` sendiri lewat
 ### Struktur DI
 
 - `MyApplication` — entry point Hilt, dianotasi `@HiltAndroidApp`
-- `di/UserPreferencesModule` — menyediakan `UserPreferencesDataStore` sebagai `@Singleton`
+- `di/UserPreferencesModule` & `di/AppModule` — menyediakan dependensi sebagai `@Singleton`
 - `MainActivity` — dianotasi `@AndroidEntryPoint`, menerima inject dan meneruskan ke `ComposeApp`
+
+---
+
+## 🌐 Networking dengan Retrofit
+
+Aplikasi MyDuit memanfaatkan Retrofit untuk mengambil _live exchange rate_ (kurs mata uang USD ke IDR dan lainnya) dari _public API_.
+
+- **Endpoint**: `https://open.er-api.com/v6/latest/USD`
+- **Converter**: Gson (`Converter.Factory`) + anotasi `@SerializedName` agar _key_ JSON (`base_code`) otomatis di-mapping rapi ke camelCase Kotlin (`baseCode`).
+- **UI State Pattern**: Proses memuat data di-_wrap_ di dalam generic state `UiState` (Idle, Loading, Success, Error).
+- **Dedicated Screen**: Terdapat layar spesifik `CurrencyScreen` yang mendemonstrasikan pengambilan _list_ dari map JSON yang berjumlah puluhan mata uang, kemudian di-render secara efisien ke dalam komponen `LazyColumn`.
 
 ---
 
 ## 📸 Tampilan Aplikasi
 
-|                                                   Login                                                   |                                              Dashboard Utama                                              |                                              Catat Transaksi                                              |                                             Detail Transaksi                                              |
-| :-------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------: |
+|                                                         Login                                                         |                                                    Dashboard Utama                                                    |                                                    Catat Transaksi                                                    |                                             Detail Transaksi                                              |
+| :-------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------: |
 | <img width="395" alt="login" src="https://github.com/user-attachments/assets/19876284-1fd8-4236-913e-96f598ea2e85" /> | <img width="360" alt="image" src="https://github.com/user-attachments/assets/5ecf43ce-7b29-409f-8e1a-3efec927b4a4" /> | <img width="360" alt="image" src="https://github.com/user-attachments/assets/837db808-a590-476b-ba7f-ac68d4fbb683" /> | <img width="370" src="https://github.com/user-attachments/assets/789aaa4f-01c6-4445-a987-a2bf94377728" /> |
 
 ---
@@ -130,6 +159,7 @@ konfirmasi Alert Dialog, dan tombol Opsi Tambahan yang membuka Bottom Sheet.
 - 🚪 Logout dengan clear session
 - 🎨 UI Material 3 modern
 - 💉 Dependency Injection dengan Hilt
+- 💱 Kurs USD ke berbagai mata uang (Retrofit + open.er-api.com)
 
 ---
 
@@ -165,18 +195,20 @@ LoginScreen
 
 ## 🛠️ Teknologi yang Digunakan
 
-| Teknologi              | Versi          | Kegunaan                            |
-| ---------------------- | -------------- | ----------------------------------- |
-| Kotlin                 | 2.0.21         | Bahasa utama                        |
-| Jetpack Compose        | BOM 2025.05.00 | UI                                  |
-| Material Design 3      | -              | UI Design                           |
-| Navigation 3           | 1.0.0-rc01     | Navigasi                            |
-| ViewModel Nav3         | 2.9.0-alpha03  | State                               |
-| Serialization          | 1.7.3          | Routing                             |
-| Material Icons         | -              | Icon                                |
-| DataStore Preferences  | 1.1.4          | Persistensi sesi pengguna           |
-| Hilt                   | 2.59.2         | Dependency Injection                |
-| KSP                    | 2.0.21-1.0.27  | Annotation processor untuk Hilt     |
+| Teknologi             | Versi          | Kegunaan                          |
+| --------------------- | -------------- | --------------------------------- |
+| Kotlin                | 2.0.21         | Bahasa utama                      |
+| Jetpack Compose       | BOM 2025.05.00 | UI                                |
+| Material Design 3     | -              | UI Design                         |
+| Navigation 3          | 1.0.0-rc01     | Navigasi                          |
+| ViewModel Nav3        | 2.9.0-alpha03  | State                             |
+| Serialization         | 1.7.3          | Routing                           |
+| Material Icons        | -              | Icon                              |
+| DataStore Preferences | 1.1.4          | Persistensi sesi pengguna         |
+| Retrofit                | 2.9.0          | HTTP Client untuk REST API           |
+| Gson Converter           | 2.9.0          | Parsing JSON ke data class           |
+| Hilt                  | 2.59.2         | Dependency Injection              |
+| KSP                   | 2.0.21-1.0.27  | Annotation processor untuk Hilt |
 
 ---
 
@@ -188,22 +220,35 @@ LoginScreen
 ├── core/
 │   └── ComposeApp.kt
 ├── data/
-│   └── UserPreferencesDataStore.kt
+│   ├── UserPreferencesDataStore.kt
+│   ├── model/                          ← NEW (Week 11)
+│   │   └── UiState.kt
+│   ├── remote/                         ← NEW (Week 11)
+│   │   ├── ApiConstants.kt
+│   │   ├── CurrencyApiService.kt
+│   │   └── CurrencyResponse.kt
+│   └── repository/                     ← NEW (Week 11)
+│       └── CurrencyRepository.kt
 ├── di/
-│   └── UserPreferencesModule.kt        ← NEW (Week 10)
+│   ├── AppModule.kt                    ← NEW (Week 11)
+│   └── UserPreferencesModule.kt
 ├── navigation/
 │   ├── Compositions.kt
 │   └── Routes.kt
 ├── screens/
 │   ├── LoginScreen.kt
 │   ├── Dashboard.kt
-│   └── TransactionDetail.kt
-├── ui/theme/
-│   ├── Color.kt
-│   ├── Theme.kt
-│   └── Type.kt
+│   ├── TransactionDetail.kt
+│   └── CurrencyScreen.kt               ← NEW (Week 11)
+├── ui/
+│   ├── AuthViewModel.kt                ← NEW (Week 11)
+│   ├── CurrencyViewModel.kt            ← NEW (Week 11)
+│   └── theme/
+│       ├── Color.kt
+│       ├── Theme.kt
+│       └── Type.kt
 ├── MainActivity.kt
-└── MyApplication.kt                    ← NEW (Week 10)
+└── MyApplication.kt
 
 ```
 
@@ -212,6 +257,7 @@ LoginScreen
 ## 🚀 Cara Menjalankan
 
 1. **Clone repository**
+
 ```bash
    git clone https://github.com/Punyaadapaa/MyDuit.git
 ```
@@ -227,7 +273,6 @@ LoginScreen
    - Hubungkan device fisik atau jalankan emulator
    - Klik tombol ▶ Run atau `Shift + F10`
 
-
 ---
 
 ## 👥 Kelompok 2
@@ -241,9 +286,12 @@ Aplikasi ini dikembangkan oleh:
 ---
 
 ## 📚 Referensi:
+
 1. https://developer.android.com/guide/navigation/navigation-3?hl=id
 2. https://developer.android.com/topic/libraries/architecture/datastore
 3. https://developer.android.com/training/dependency-injection/hilt-android
 4. https://github.com/rizalanggoro/ppab-2026/blob/main/week-06/tugas.md
 5. https://github.com/rizalanggoro/ppab-2026/blob/main/week-09/materi.md
 6. https://github.com/rizalanggoro/ppab-2026/blob/main/week-10/materi.md
+7. https://square.github.io/retrofit/
+8. https://github.com/rizalanggoro/ppab-2026/blob/main/week-11/materi.md
