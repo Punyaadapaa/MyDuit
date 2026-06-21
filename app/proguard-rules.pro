@@ -19,3 +19,13 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# ── Retrofit + Gson ──────────────────────────────────────────────
+# Keep all data classes in data.remote package (Gson uses reflection)
+-keep class com.example.myduit.data.remote.** { *; }
+
+# Gson internals
+-keepattributes Signature
+-keepattributes *Annotation*
+-dontwarn sun.misc.**
+-keep class com.google.gson.** { *; }
