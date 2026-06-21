@@ -30,4 +30,12 @@ class TransactionViewModel @Inject constructor(
     suspend fun getById(id: String): Transaction? {
         return repository.getById(id)
     }
+
+    // ── Buat Visualisasi Data
+
+    fun getIncomeVsExpense(): Pair<Double, Double> {
+        val income = transactions.value.filter { it.isIncome }.sumOf { it.amount }
+        val expense = transactions.value.filter { !it.isIncome }.sumOf { it.amount }
+        return income to expense
+    }
 }
