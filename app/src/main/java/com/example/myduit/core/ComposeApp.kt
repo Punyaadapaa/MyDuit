@@ -17,9 +17,11 @@ import com.example.myduit.navigation.LocalBackStack
 import com.example.myduit.navigation.Login
 import com.example.myduit.navigation.TransactionDetail
 import com.example.myduit.navigation.Currency
+import com.example.myduit.navigation.Report
 import com.example.myduit.screens.CurrencyScreen
 import com.example.myduit.screens.DashboardScreen
 import com.example.myduit.screens.LoginScreen
+import com.example.myduit.screens.ReportScreen
 import com.example.myduit.screens.TransactionDetailScreen
 import com.example.myduit.ui.TransactionViewModel
 import com.example.myduit.ui.theme.MyDuitTheme
@@ -28,7 +30,6 @@ import com.example.myduit.ui.theme.MyDuitTheme
 fun ComposeApp() {
     val backStack = rememberNavBackStack(Login)
 
-    // ViewModel di level Activity (di luar NavDisplay) agar shared antar entry
     val transactionViewModel: TransactionViewModel = hiltViewModel()
 
     CompositionLocalProvider(LocalBackStack provides backStack) {
@@ -62,6 +63,9 @@ fun ComposeApp() {
                         }
                         entry<Currency> {
                             CurrencyScreen()
+                        }
+                        entry<Report> {
+                            ReportScreen(transactionViewModel = transactionViewModel)
                         }
                     }
                 )
