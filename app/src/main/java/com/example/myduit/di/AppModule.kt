@@ -53,7 +53,20 @@ object AppModule {
             context,
             AppDatabase::class.java,
             "myduit_database"
-        ).build()
+        )
+            .addMigrations(AppDatabase.MIGRATION_1_2, AppDatabase.MIGRATION_2_3, AppDatabase.MIGRATION_3_4)
+            .build()
+    }
+
+    @Provides
+    fun provideCategoryDao(db: AppDatabase): com.example.myduit.data.local.CategoryDao {
+        return db.categoryDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideCategoryRepository(dao: com.example.myduit.data.local.CategoryDao): com.example.myduit.data.repository.CategoryRepository {
+        return com.example.myduit.data.repository.CategoryRepository(dao)
     }
 
     @Provides
@@ -65,5 +78,16 @@ object AppModule {
     @Singleton
     fun provideTransactionRepository(dao: TransactionDao): TransactionRepository {
         return TransactionRepository(dao)
+    }
+
+    @Provides
+    fun provideBudgetDao(db: AppDatabase): com.example.myduit.data.local.BudgetDao {
+        return db.budgetDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideBudgetRepository(dao: com.example.myduit.data.local.BudgetDao): com.example.myduit.data.repository.BudgetRepository {
+        return com.example.myduit.data.repository.BudgetRepository(dao)
     }
 }

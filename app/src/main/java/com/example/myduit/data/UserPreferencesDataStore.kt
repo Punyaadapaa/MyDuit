@@ -16,12 +16,18 @@ class UserPreferencesDataStore(private val context: Context) {
 
     companion object {
         val USERNAME_KEY = stringPreferencesKey("username")
+        val PIN_KEY = stringPreferencesKey("pin")
     }
 
     // Membaca username sebagai Flow — otomatis update jika berubah
     val usernameFlow: Flow<String> = context.userDataStore.data
         .map { preferences ->
             preferences[USERNAME_KEY] ?: ""
+        }
+
+    val pinFlow: Flow<String> = context.userDataStore.data
+        .map { preferences ->
+            preferences[PIN_KEY] ?: ""
         }
 
     // Menyimpan username secara asynchronous (suspend function)
@@ -31,10 +37,17 @@ class UserPreferencesDataStore(private val context: Context) {
         }
     }
 
-    // Menghapus username saat logout
-    suspend fun clearUsername() {
+    suspend fun savePin(pin: String) {
+        context.userDataStore.edit { preferences ->
+            preferences[PIN_KEY] = pin
+        }
+    }
+
+    // Menghapus kredensial saat logout
+    suspend fun clearCredentials() {
         context.userDataStore.edit { preferences ->
             preferences.remove(USERNAME_KEY)
+            preferences.remove(PIN_KEY)
         }
     }
 }

@@ -14,6 +14,9 @@ interface TransactionDao {
     @Query("SELECT * FROM transactions ORDER BY rowid DESC")
     fun getAllTransactions(): Flow<List<Transaction>>
 
+    @Query("SELECT * FROM transactions WHERE date LIKE '%' || :monthYear ORDER BY rowid DESC")
+    fun getTransactionsByMonth(monthYear: String): Flow<List<Transaction>>
+
     @Query("SELECT * FROM transactions WHERE id = :id")
     suspend fun getById(id: String): Transaction?
 

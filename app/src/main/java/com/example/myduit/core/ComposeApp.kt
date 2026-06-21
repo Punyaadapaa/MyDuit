@@ -12,18 +12,43 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import com.example.myduit.navigation.AddTransaction
+import com.example.myduit.navigation.Currency
 import com.example.myduit.navigation.Dashboard
+import com.example.myduit.navigation.ExportReport
 import com.example.myduit.navigation.LocalBackStack
 import com.example.myduit.navigation.Login
+import com.example.myduit.navigation.ManageCategories
+import com.example.myduit.navigation.Profile
+import com.example.myduit.navigation.Register
+import com.example.myduit.navigation.Statistics
 import com.example.myduit.navigation.TransactionDetail
+<<<<<<< HEAD
+import com.example.myduit.screens.AddTransactionScreen
+=======
 import com.example.myduit.navigation.Currency
 import com.example.myduit.navigation.Report
+>>>>>>> origin/main
 import com.example.myduit.screens.CurrencyScreen
 import com.example.myduit.screens.DashboardScreen
+import com.example.myduit.screens.ExportScreen
 import com.example.myduit.screens.LoginScreen
+<<<<<<< HEAD
+import com.example.myduit.screens.ManageCategoriesScreen
+import com.example.myduit.screens.ProfileScreen
+import com.example.myduit.screens.RegisterScreen
+import com.example.myduit.screens.StatisticsScreen
+=======
 import com.example.myduit.screens.ReportScreen
+>>>>>>> origin/main
 import com.example.myduit.screens.TransactionDetailScreen
 import com.example.myduit.ui.TransactionViewModel
+import com.example.myduit.ui.SettingsViewModel
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import java.util.Locale
 import com.example.myduit.ui.theme.MyDuitTheme
 
 @Composable
@@ -31,9 +56,24 @@ fun ComposeApp() {
     val backStack = rememberNavBackStack(Login)
 
     val transactionViewModel: TransactionViewModel = hiltViewModel()
+    val settingsViewModel: SettingsViewModel = hiltViewModel()
+    
+    val isDarkModePref by settingsViewModel.isDarkMode.collectAsState()
+    val isSystemDark = androidx.compose.foundation.isSystemInDarkTheme()
+    val isDarkMode = isDarkModePref ?: isSystemDark
 
-    CompositionLocalProvider(LocalBackStack provides backStack) {
-        MyDuitTheme {
+    val language by settingsViewModel.language.collectAsState()
+    
+    // Set locale dynamically
+    val configuration = LocalConfiguration.current
+    val locale = Locale(language)
+    configuration.setLocale(locale)
+
+    CompositionLocalProvider(
+        LocalBackStack provides backStack,
+        LocalConfiguration provides configuration
+    ) {
+        MyDuitTheme(darkTheme = isDarkMode) {
             Surface(
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background,
@@ -63,6 +103,27 @@ fun ComposeApp() {
                         }
                         entry<Currency> {
                             CurrencyScreen()
+                        }
+                        entry<Register> {
+                            RegisterScreen()
+                        }
+                        entry<AddTransaction> {
+                            AddTransactionScreen(
+                                transactionId = it.transactionId,
+                                transactionViewModel = transactionViewModel
+                            )
+                        }
+                        entry<Statistics> {
+                            StatisticsScreen(transactionViewModel = transactionViewModel)
+                        }
+                        entry<ExportReport> {
+                            ExportScreen(transactionViewModel = transactionViewModel)
+                        }
+                        entry<Profile> {
+                            ProfileScreen(settingsViewModel = settingsViewModel)
+                        }
+                        entry<ManageCategories> {
+                            ManageCategoriesScreen()
                         }
                         entry<Report> {
                             ReportScreen(transactionViewModel = transactionViewModel)

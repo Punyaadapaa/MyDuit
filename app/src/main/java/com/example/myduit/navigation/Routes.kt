@@ -18,4 +18,22 @@ data class TransactionDetail(val transactionId: String) : AppRoute
 object Currency : AppRoute
 
 @Serializable
+object Register : AppRoute
+
+@Serializable
+data class AddTransaction(val transactionId: String? = null) : AppRoute
+
+@Serializable
+object Statistics : AppRoute
+
+@Serializable
+object ExportReport : AppRoute
+
+@Serializable
+object Profile : AppRoute
+
+@Serializable
+object ManageCategories : AppRoute
+
+@Serializable
 object Report : AppRoute
