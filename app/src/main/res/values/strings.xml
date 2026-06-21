@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">MyDuit</string>
+    <string name="profile_title">Profil</string>
+    <string name="profile_user_default">Pengguna</string>
+    <string name="profile_section_account">AKUN</string>
+    <string name="profile_edit_profile">Edit Profil</string>
+    <string name="profile_linked_bank">Rekening Bank Terhubung</string>
+    <string name="profile_section_preferences">PREFERENSI</string>
+    <string name="profile_notification">Notifikasi</string>
+    <string name="profile_theme">Tema</string>
+    <string name="profile_language">Bahasa</string>
+    <string name="profile_section_security">KEAMANAN &amp; BANTUAN</string>
+    <string name="profile_change_pin">Ubah PIN</string>
+    <string name="profile_help_center">Pusat Bantuan</string>
+    <string name="profile_privacy_policy">Kebijakan Privasi</string>
+    <string name="profile_logout">Keluar</string>
 </resources>

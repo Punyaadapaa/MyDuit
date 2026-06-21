@@ -10,6 +10,8 @@ class TransactionRepository @Inject constructor(
 ) {
     fun getAllTransactions(): Flow<List<Transaction>> = dao.getAllTransactions()
 
+    fun getTransactionsByMonth(monthYear: String): Flow<List<Transaction>> = dao.getTransactionsByMonth(monthYear)
+
     suspend fun getById(id: String): Transaction? = dao.getById(id)
 
     suspend fun insert(transaction: Transaction) = dao.insert(transaction)
