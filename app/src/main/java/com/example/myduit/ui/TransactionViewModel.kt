@@ -35,12 +35,12 @@ class TransactionViewModel @Inject constructor(
         return repository.getById(id)
     }
 
+    // ── Buat Visualisasi Data
     fun getIncomeVsExpense(): Pair<Double, Double> {
         val income = transactions.value.filter { it.isIncome }.sumOf { it.amount }
         val expense = transactions.value.filter { !it.isIncome }.sumOf { it.amount }
         return income to expense
     }
-
     fun buildReportCsv(txList: List<Transaction>): String = buildString {
         val income = txList.filter { it.isIncome }.sumOf { it.amount }
         val expense = txList.filter { !it.isIncome }.sumOf { it.amount }

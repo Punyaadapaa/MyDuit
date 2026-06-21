@@ -23,15 +23,24 @@ import com.example.myduit.navigation.Profile
 import com.example.myduit.navigation.Register
 import com.example.myduit.navigation.Statistics
 import com.example.myduit.navigation.TransactionDetail
+<<<<<<< HEAD
 import com.example.myduit.screens.AddTransactionScreen
+=======
+import com.example.myduit.navigation.Currency
+import com.example.myduit.navigation.Report
+>>>>>>> origin/main
 import com.example.myduit.screens.CurrencyScreen
 import com.example.myduit.screens.DashboardScreen
 import com.example.myduit.screens.ExportScreen
 import com.example.myduit.screens.LoginScreen
+<<<<<<< HEAD
 import com.example.myduit.screens.ManageCategoriesScreen
 import com.example.myduit.screens.ProfileScreen
 import com.example.myduit.screens.RegisterScreen
 import com.example.myduit.screens.StatisticsScreen
+=======
+import com.example.myduit.screens.ReportScreen
+>>>>>>> origin/main
 import com.example.myduit.screens.TransactionDetailScreen
 import com.example.myduit.ui.TransactionViewModel
 import com.example.myduit.ui.SettingsViewModel
@@ -46,7 +55,6 @@ import com.example.myduit.ui.theme.MyDuitTheme
 fun ComposeApp() {
     val backStack = rememberNavBackStack(Login)
 
-    // ViewModel di level Activity (di luar NavDisplay) agar shared antar entry
     val transactionViewModel: TransactionViewModel = hiltViewModel()
     val settingsViewModel: SettingsViewModel = hiltViewModel()
     
@@ -116,6 +124,9 @@ fun ComposeApp() {
                         }
                         entry<ManageCategories> {
                             ManageCategoriesScreen()
+                        }
+                        entry<Report> {
+                            ReportScreen(transactionViewModel = transactionViewModel)
                         }
                     }
                 )

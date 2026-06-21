@@ -34,3 +34,6 @@ object Profile : AppRoute
 
 @Serializable
 object ManageCategories : AppRoute
+
+@Serializable
+object Report : AppRoute
