@@ -39,9 +39,6 @@ import com.example.myduit.ui.TransactionViewModel
 import com.example.myduit.ui.SettingsViewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
-import java.util.Locale
 import com.example.myduit.ui.theme.MyDuitTheme
 
 @Composable
@@ -55,16 +52,11 @@ fun ComposeApp() {
     val isSystemDark = androidx.compose.foundation.isSystemInDarkTheme()
     val isDarkMode = isDarkModePref ?: isSystemDark
 
-    val language by settingsViewModel.language.collectAsState()
-    
-    // Set locale dynamically
-    val configuration = LocalConfiguration.current
-    val locale = Locale(language)
-    configuration.setLocale(locale)
+    // Locale is now handled in MainActivity.attachBaseContext via SettingsRepository
+    // No need to override LocalConfiguration here
 
     CompositionLocalProvider(
-        LocalBackStack provides backStack,
-        LocalConfiguration provides configuration
+        LocalBackStack provides backStack
     ) {
         MyDuitTheme(darkTheme = isDarkMode) {
             Surface(

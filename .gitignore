@@ -5,3 +5,5 @@ build/
 local.properties
 .DS_Store
 .vscode/
+# Generated Gradle daemon JVM properties (foojay toolchain cache)
+gradle/gradle-daemon-jvm.properties

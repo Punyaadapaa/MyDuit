@@ -180,6 +180,18 @@ fun RegisterScreen(
                     Button(
                         onClick = {
                             if (username.isNotBlank() && password.isNotBlank()) {
+                                if (password.length < 4) {
+                                    Toast.makeText(context, "PIN minimal 4 digit", Toast.LENGTH_SHORT).show()
+                                    return@Button
+                                }
+                                if (password.length > 8) {
+                                    Toast.makeText(context, "PIN maksimal 8 digit", Toast.LENGTH_SHORT).show()
+                                    return@Button
+                                }
+                                if (!password.all { it.isDigit() }) {
+                                    Toast.makeText(context, "PIN hanya boleh angka", Toast.LENGTH_SHORT).show()
+                                    return@Button
+                                }
                                 scope.launch {
                                     authViewModel.saveUsername(username)
                                     authViewModel.savePin(password)

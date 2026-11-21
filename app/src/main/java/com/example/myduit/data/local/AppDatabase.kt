@@ -49,7 +49,10 @@ abstract class AppDatabase : RoomDatabase() {
                 )
                 
                 defaults.forEach { (name, icon) ->
-                    db.execSQL("INSERT INTO categories (id, name, iconName) VALUES ('${UUID.randomUUID()}', '$name', '$icon')")
+                    db.execSQL(
+                        "INSERT INTO categories (id, name, iconName) VALUES (?, ?, ?)",
+                        arrayOf(UUID.randomUUID().toString(), name, icon)
+                    )
                 }
             }
         }

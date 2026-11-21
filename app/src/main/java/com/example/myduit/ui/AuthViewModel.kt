@@ -12,7 +12,6 @@ class AuthViewModel @Inject constructor(
 ) : ViewModel() {
 
     val usernameFlow: Flow<String> = dataStore.usernameFlow
-    val pinFlow: Flow<String> = dataStore.pinFlow
 
     suspend fun saveUsername(username: String) {
         dataStore.saveUsername(username)
@@ -20,6 +19,10 @@ class AuthViewModel @Inject constructor(
 
     suspend fun savePin(pin: String) {
         dataStore.savePin(pin)
+    }
+
+    suspend fun verifyPin(pin: String): Boolean {
+        return dataStore.verifyPin(pin)
     }
 
     suspend fun clearCredentials() {
