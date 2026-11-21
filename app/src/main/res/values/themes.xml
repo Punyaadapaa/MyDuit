@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.MyDuit" parent="android:style/Theme.Material.Light.NoActionBar">
+    <style name="Theme.MyDuit.Base" parent="android:style/Theme.Material.Light.NoActionBar">
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:windowLightNavigationBar">true</item>
     </style>
+
+    <style name="Theme.MyDuit" parent="Theme.MyDuit.Base" />
 </resources>

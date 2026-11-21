@@ -7,7 +7,9 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 private val Context.dataStore by preferencesDataStore(name = "settings")
@@ -32,6 +34,17 @@ class SettingsRepository @Inject constructor(@ApplicationContext private val con
 
     val isNotifEnabled: Flow<Boolean> = dataStore.data.map { preferences ->
         preferences[IS_NOTIF_ENABLED] ?: true // Default to true
+    }
+
+    // Synchronous read for attachBaseContext (before Compose init)
+    fun getLanguageSync(): String {
+        return try {
+            runBlocking {
+                dataStore.data.map { it[LANGUAGE] ?: "id" }.first()
+            }
+        } catch (e: Exception) {
+            "id"
+        }
     }
 
     suspend fun setDarkMode(isDark: Boolean) {

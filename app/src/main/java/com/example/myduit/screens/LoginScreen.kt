@@ -42,7 +42,6 @@ fun LoginScreen(
     val context = LocalContext.current
 
     val savedUsername by authViewModel.usernameFlow.collectAsState(initial = "")
-    val savedPin by authViewModel.pinFlow.collectAsState(initial = "")
 
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -163,8 +162,15 @@ fun LoginScreen(
                             // Validasi: cek apakah kredensial cocok dengan yang ada di DataStore
                             if (savedUsername.isEmpty()) {
                                 Toast.makeText(context, "Belum ada akun, silakan daftar!", Toast.LENGTH_SHORT).show()
-                            } else if (username == savedUsername && password == savedPin) {
-                                backStack.add(Dashboard)
+                            } else if (username == savedUsername) {
+                                scope.launch {
+                                    val isValid = authViewModel.verifyPin(password)
+                                    if (isValid) {
+                                        backStack.add(Dashboard)
+                                    } else {
+                                        Toast.makeText(context, "Username atau Password salah!", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
                             } else {
                                 Toast.makeText(context, "Username atau Password salah!", Toast.LENGTH_SHORT).show()
                             }
